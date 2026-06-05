@@ -1,0 +1,15 @@
+#+TITLE: TODO
+#+TODO: TODO(t) NEXT(n) WAIT(w) REVIEW(r) CONTINUE(C) | DONE(d) CANCEL(c)
+
+This repository uses AI agents to assist with development.
+
+Important files:
+
+- [[../agents/AGENTS.md]]: AI agent instructions and workflow rules
+- [[./todo.org]]: Active task index & statuses.
+- [[../agents/ai-notes.org]]: Cross-task context (notes, blockers, decisions). 
+- [[../../CHANGELOG.org]]: Approved/completed user-visible changes.
+
+* TODO Task
+
+* Abgeschlossen

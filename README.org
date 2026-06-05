@@ -1,0 +1,264 @@
+#+STARTUP: showall
+
+* TODO-Keywords for Markdown in Emacs
+
+[[https://www.gnu.org/licenses/gpl-3.0][https://img.shields.io/badge/License-GPL%20v3-blue.svg]] [[https://github.com/hubisan/markdown-todo-keywords/actions/workflows/tests.yml][https://github.com/hubisan/markdown-todo-keywords/actions/workflows/tests.yml/badge.svg]]
+
+=markdown-todo-keywords= adds Org-like TODO keywords to Markdown headings.
+
+It keeps Markdown files plain and valid while allowing headings such as:
+
+#+begin_src markdown
+# TODO Write README
+## NEXT Implement command
+## WAIT Review feedback
+## DONE Publish package
+## CANCEL Drop idea
+#+end_src
+
+** AI Agent Instructions
+
+This repository contains AI-specific development instructions in
+[[./.project/agents/AGENTS.md][.project/agents/AGENTS.md]]. AI agents must read =.project/agents/AGENTS.md= before
+making changes.
+
+** Features
+
+- Org-like TODO keywords in Markdown headings
+- Minimal default keyword workflow:
+  - =TODO=
+  - =NEXT=
+  - =WAIT=
+  - =DONE=
+  - =CANCEL=
+- Keyword cycling
+- Keyword setting with completion
+- Keyword clearing
+- Jumping to Markdown headings with completion
+- Completion candidates include TODO keyword, heading level, and title
+- Font-lock highlighting for TODO keywords
+- Customizable keyword faces, similar to =org-todo-keyword-faces=
+- Only ALL CAPS keywords are accepted
+- Works with regular =markdown-mode= and =gfm-mode=
+
+-----
+
+** Contents
+
+- [[#installation][Installation]]
+- [[#usage][Usage]]
+- [[#customization][Customization]]
+- [[#key-bindings][Key Bindings]]
+- [[#changelog][Changelog]]
+- [[#contributing][Contributing]]
+
+** Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+
+*** straight.el
+
+#+begin_src emacs-lisp
+(use-package markdown-todo-keywords
+  :straight (:host github :repo "hubisan/markdown-todo-keywords")
+  :hook ((markdown-mode . markdown-todo-keywords-mode)
+         (gfm-mode . markdown-todo-keywords-mode)))
+#+end_src
+
+*** Manual installation
+
+Clone the repository somewhere in your Emacs load path:
+
+#+begin_src bash
+git clone https://github.com/hubisan/markdown-todo-keywords.git
+#+end_src
+
+Then load the package:
+
+#+begin_src emacs-lisp
+(add-to-list 'load-path "/path/to/markdown-todo-keywords")
+(require 'markdown-todo-keywords)
+
+(add-hook 'markdown-mode-hook #'markdown-todo-keywords-mode)
+(add-hook 'gfm-mode-hook #'markdown-todo-keywords-mode)
+#+end_src
+
+** Usage
+:PROPERTIES:
+:CUSTOM_ID: usage
+:END:
+
+Enable =markdown-todo-keywords-mode= in Markdown buffers.
+
+#+begin_src emacs-lisp
+(add-hook 'markdown-mode-hook #'markdown-todo-keywords-mode)
+(add-hook 'gfm-mode-hook #'markdown-todo-keywords-mode)
+#+end_src
+
+Then use TODO keywords directly after Markdown heading markers:
+
+#+begin_src markdown
+# TODO Write README
+## NEXT Implement command
+## WAIT Review feedback
+## DONE Publish package
+## CANCEL Drop idea
+#+end_src
+
+The package provides these interactive commands:
+
+- =markdown-todo-keywords-cycle=
+- =markdown-todo-keywords-set=
+- =markdown-todo-keywords-clear=
+- =markdown-todo-keywords-current=
+- =markdown-todo-keywords-goto=
+
+*** Cycle TODO keyword
+
+Use =markdown-todo-keywords-cycle= on a Markdown heading to cycle through the configured keywords.
+
+With the default configuration, cycling follows this order:
+
+#+begin_src text
+TODO -> NEXT -> WAIT -> DONE -> CANCEL -> TODO
+#+end_src
+
+*** Set TODO keyword
+
+Use =markdown-todo-keywords-set= to select a keyword with completion.
+
+*** Clear TODO keyword
+
+Use =markdown-todo-keywords-clear= to remove the TODO keyword from the current heading.
+
+*** Jump to heading
+
+Use =markdown-todo-keywords-goto= to jump to a Markdown heading with completion.
+
+Completion candidates include:
+
+- TODO keyword
+- heading level
+- heading title
+
+This means completion UIs such as Consult, Vertico, Icomplete, Helm, or Ivy can filter headings by simply typing a keyword such as =todo=, =next=, =wait=, =done=, or =cancel=.
+
+** Customization
+:PROPERTIES:
+:CUSTOM_ID: customization
+:END:
+
+*** Keywords
+
+The default keywords are:
+
+#+begin_src emacs-lisp
+'("TODO" "NEXT" "WAIT" "|" "DONE" "CANCEL")
+#+end_src
+
+Customize them with:
+
+#+begin_src emacs-lisp
+(setq markdown-todo-keywords-list
+      '("TODO" "NEXT" "WAIT" "|" "DONE" "CANCEL"))
+#+end_src
+
+Only ALL CAPS keywords are supported.
+
+The separator =|= is allowed in the keyword list and ignored by the implementation.  It is only used to visually separate open and done states.
+
+*** Faces
+
+By default, =markdown-todo-keywords-faces= is =nil=.
+
+You can customize faces similar to =org-todo-keyword-faces=.
+
+#+begin_src emacs-lisp
+(setq markdown-todo-keywords-faces
+      '(("TODO" . "#FF85C2")
+        ("NEXT" . "#FF256F")
+        ("WAIT" . "#ba843b")
+        ("DONE" . "#2a5c4a")
+        ("CANCEL" . "#2a5c4a")))
+#+end_src
+
+The face value can be:
+
+- a face symbol
+- a color string
+- a property list
+
+Examples:
+
+#+begin_src emacs-lisp
+(setq markdown-todo-keywords-faces
+      '(("TODO" . font-lock-warning-face)
+        ("NEXT" . "#FF256F")
+        ("WAIT" . (:foreground "#ba843b" :weight bold))
+        ("DONE" . shadow)
+        ("CANCEL" . shadow)))
+#+end_src
+
+*** Default face
+
+Keywords without a custom face inherit from:
+
+#+begin_src emacs-lisp
+markdown-todo-keywords-default-face
+#+end_src
+
+** Key Bindings
+:PROPERTIES:
+:CUSTOM_ID: key-bindings
+:END:
+
+This package does not define key bindings by default.
+
+Example bindings with =general.el=:
+
+#+begin_src emacs-lisp
+(general-define-key
+ :keymaps '(markdown-mode-map gfm-mode-map)
+ :states '(normal visual)
+ "t" #'markdown-todo-keywords-cycle
+ "T" #'markdown-todo-keywords-set
+ "g T" #'markdown-todo-keywords-goto)
+#+end_src
+
+Example Hydra:
+
+#+begin_src emacs-lisp
+(defhydra my-hydra-lang-markdown-todo
+  (:hint nil :color teal
+         :pre (setq which-key-inhibit t)
+         :post (setq which-key-inhibit nil))
+  ("t" markdown-todo-keywords-cycle "cycle" :column "TODO")
+  ("s" markdown-todo-keywords-set "set" :column "TODO")
+  ("x" markdown-todo-keywords-clear "clear" :column "TODO")
+  ("g" markdown-todo-keywords-goto "goto" :column "TODO")
+  ("SPC" nil)
+  ("q" nil))
+#+end_src
+
+** Changelog
+:PROPERTIES:
+:CUSTOM_ID: changelog
+:END:
+
+See [[./CHANGELOG.org]].
+
+** Contributing
+:PROPERTIES:
+:CUSTOM_ID: contributing
+:END:
+
+Use the issue tracker to reports bugs, suggest improvements or propose new features. If you want to contribute please open a pull request after having opened a new issue.
+
+In any case please check out the [[./CONTRIBUTING.org::*Contributing][contributing guidelines]] beforehand.
+
+** Licence
+
+This project is licensed under the GNU General Public License v3.0 or later.
+
+See [[./LICENSE][LICENSE]].
