@@ -7,7 +7,7 @@
 ;; Domain Specific Language
 ;; https://emacs-eask.github.io/DSL/
 (package "markdown-todo-keywords"
-         "0.2.0"
+         "0.3.0"
          "Org-like TODO keywords for Markdown headings")
 
 (website-url "https://github.com/hubisan/markdown-todo-keywords")

@@ -4,7 +4,7 @@
 
 ;; Author: Daniel Hubmann <hubisan@gmail.com>
 ;; Maintainer: Daniel Hubmann <hubisan@gmail.com>
-;; Version: 0.2.0
+;; Version: 0.3.0
 ;; Package-Requires: ((emacs "27.1") (markdown-mode "2.6"))
 ;; Keywords: markdown, outlines, convenience
 ;; URL: https://github.com/hubisan/markdown-todo-keywords
