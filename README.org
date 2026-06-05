@@ -60,10 +60,11 @@ making changes.
 *** straight.el
 
 #+begin_src emacs-lisp
-(use-package markdown-todo-keywords
-  :straight (:host github :repo "hubisan/markdown-todo-keywords")
-  :hook ((markdown-mode . markdown-todo-keywords-mode)
-         (gfm-mode . markdown-todo-keywords-mode)))
+  (use-package markdown-todo-keywords
+    :straight (markdown-todo-keywords :type git :host github :repo
+                          "hubisan/markdown-todo-keywords") 
+    :hook ((markdown-mode . markdown-todo-keywords-mode)
+           (gfm-mode . markdown-todo-keywords-mode)))
 #+end_src
 
 *** Manual installation
@@ -114,35 +115,31 @@ The package provides these interactive commands:
 - =markdown-todo-keywords-current=
 - =markdown-todo-keywords-goto=
 
-*** Cycle TODO keyword
+- Cycle TODO keyword ::
+  Use =markdown-todo-keywords-cycle= on a Markdown heading to cycle through the configured keywords.
+  
+  With the default configuration, cycling follows this order:
+  
+  #+begin_src text
+  TODO -> NEXT -> WAIT -> DONE -> CANCEL -> TODO
+  #+end_src
 
-Use =markdown-todo-keywords-cycle= on a Markdown heading to cycle through the configured keywords.
+- Set TODO keyword ::
+  Use =markdown-todo-keywords-set= to select a keyword with completion.
 
-With the default configuration, cycling follows this order:
+- Clear TODO keyword ::
+  Use =markdown-todo-keywords-clear= to remove the TODO keyword from the current heading.
 
-#+begin_src text
-TODO -> NEXT -> WAIT -> DONE -> CANCEL -> TODO
-#+end_src
-
-*** Set TODO keyword
-
-Use =markdown-todo-keywords-set= to select a keyword with completion.
-
-*** Clear TODO keyword
-
-Use =markdown-todo-keywords-clear= to remove the TODO keyword from the current heading.
-
-*** Jump to heading
-
-Use =markdown-todo-keywords-goto= to jump to a Markdown heading with completion.
-
-Completion candidates include:
-
-- TODO keyword
-- heading level
-- heading title
-
-This means completion UIs such as Consult, Vertico, Icomplete, Helm, or Ivy can filter headings by simply typing a keyword such as =todo=, =next=, =wait=, =done=, or =cancel=.
+- Jump to heading ::
+  Use =markdown-todo-keywords-goto= to jump to a Markdown heading with completion.
+  
+  Completion candidates include:
+  
+  - TODO keyword
+  - heading level
+  - heading title
+  
+  This means completion UIs such as Consult, Vertico, Icomplete, Helm, or Ivy can filter headings by simply typing a keyword such as =todo=, =next=, =wait=, =done=, or =cancel=.
 
 ** Customization
 :PROPERTIES:

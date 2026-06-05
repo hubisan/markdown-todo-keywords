@@ -4,7 +4,7 @@
 
 ;; Author: Daniel Hubmann <hubisan@gmail.com>
 ;; Maintainer: Daniel Hubmann <hubisan@gmail.com>
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "27.1") (markdown-mode "2.6"))
 ;; Keywords: markdown, outlines, convenience
 ;; URL: https://github.com/hubisan/markdown-todo-keywords
@@ -184,9 +184,13 @@ foreground color."
         (nth (mod (1+ pos) (length keywords)) keywords)
       (car keywords))))
 
+(defun markdown-todo-keywords--keyword-width ()
+  "Return display width for TODO keyword column."
+  (apply #'max 0 (mapcar #'length (markdown-todo-keywords--keywords))))
+
 (defun markdown-todo-keywords--candidate-display (level keyword title)
   "Return completion display string for LEVEL, KEYWORD and TITLE."
-  (format "%-10s %s %s"
+  (format (format "%%-%ds %%s %%s" (markdown-todo-keywords--keyword-width))
           (or keyword "")
           (make-string level ?#)
           title))

@@ -7,6 +7,15 @@ This file records completed changes.
 :VISIBILITY: all
 :END:
 
+* 0.2.0 - 2026-06-05
+:PROPERTIES:
+:VISIBILITY: all
+:END:
+
+- =CHANGED= Changed the README to look better.
+- =FIXED= Fixed straight.el installation instructions in the README.
+- =FIXED= Made TODO keyword column width in heading completion dynamic.
+
 * 0.1.0 - 2026-06-05
 :PROPERTIES:
 :VISIBILITY: all
