@@ -4,7 +4,7 @@
 
 ;; Author: Daniel Hubmann <hubisan@gmail.com>
 ;; Maintainer: Daniel Hubmann <hubisan@gmail.com>
-;; Version: 0.3.0
+;; Version: 0.4.0
 ;; Package-Requires: ((emacs "27.1") (markdown-mode "2.6"))
 ;; Keywords: markdown, outlines, convenience
 ;; URL: https://github.com/hubisan/markdown-todo-keywords
@@ -156,8 +156,7 @@ foreground color."
   "Move point to the current Markdown heading and return non-nil if found."
   (condition-case nil
       (progn
-        (unless (markdown-on-heading-p)
-          (markdown-back-to-heading))
+        (markdown-back-to-heading)
         (markdown-on-heading-p))
     (error nil)))
 
